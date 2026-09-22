@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.*;
+
+
 
 public class ObjectFilterExcercise {
 	
@@ -13,7 +17,7 @@ public class ObjectFilterExcercise {
 		EmployeeDataBase base1 = new EmployeeDataBase(2, "Rahul", true, 50000, 27, "Madurai");
 		EmployeeDataBase base2 = new EmployeeDataBase(3, "Revanth", true, 80000, 23, "Trichy");
 		EmployeeDataBase base3 = new EmployeeDataBase(4, "Guru", false, 20000, 21, "Delhi");
-		EmployeeDataBase base4 = new EmployeeDataBase(5, "Deva", true, 90000, 29, "Chennai");
+		EmployeeDataBase base4 = new EmployeeDataBase(5, "Deva", true, 90000, 27, "Chennai");
 		bases.add(base);
 		bases.add(base1);
 		bases.add(base2);
@@ -22,6 +26,58 @@ public class ObjectFilterExcercise {
 		return bases;
 		
 	}
+	
+	public static void groupByPlace(List<EmployeeDataBase> emp) {
+		
+	  Map<String, Long> filtered = 	emp.stream().collect(Collectors
+				.groupingBy(EmployeeDataBase::getPlace, Collectors.counting()));
+	  System.out.println(filtered);
+	}
+	
+	
+	public static EmployeeDataBase getS(EmployeeDataBase e) {
+		if(e.getSalary() < 50000) {
+			return e;
+		}else {
+			return null;
+		}
+		
+		
+	}
+	
+	public static List<EmployeeDataBase> filterBySalaryStream(List<EmployeeDataBase> bases){
+	List<EmployeeDataBase> fl=bases.stream().filter(e -> e.getSalary() < 50000).collect(Collectors.toList());
+	System.out.println(fl);
+	return fl;
+	}
+	
+	public static Boolean  lessThan50K(EmployeeDataBase e) {
+		return e.getSalary() < 50000;
+	}
+	
+	public static List<String> filterBySalaryMapStream(List<EmployeeDataBase> bases){
+		List<String> fl=bases.stream().filter(e -> e.getSalary() < 50000)
+				.map(e -> e.getEmployeeName())
+				.collect(Collectors.toList());
+		
+		
+//		List<String> fl=bases.stream().filter(Main:: lessThan50K)
+//		.map(EmployeeDataBase::getEmployeeName)
+//		.collect(Collectors.toList());
+//		
+//		System.out.println(fl);
+		return fl;
+		}
+	
+	public static void mapPreparation(List<EmployeeDataBase> db) {
+		
+		Map<String, EmployeeDataBase> empDB =   db.stream()
+		.collect(Collectors.toMap(EmployeeDataBase::getEmployeeName, emp -> emp));
+		
+		System.out.println(empDB);
+	}
+	
+	
 	
 	
 	public static List<String> filterBySalary(List<EmployeeDataBase> bases){
@@ -46,7 +102,7 @@ public class ObjectFilterExcercise {
 			}
 		}
 		
-		System.out.println(result);
+//		System.out.println(result);
 			
 	}
 	
@@ -65,7 +121,7 @@ public class ObjectFilterExcercise {
 			}
 		}
 		
-		System.out.println(filtered);
+//		System.out.println(filtered);
 	}
 	
 	public static List<EmployeeDataBase> updated(List<String> names, List<EmployeeDataBase> datas){
@@ -80,7 +136,7 @@ public class ObjectFilterExcercise {
 			}
 			position++;
 		}
-		System.out.println(datas);
+//		System.out.println(datas);
 		return datas;
 	}
 
@@ -88,14 +144,42 @@ public class ObjectFilterExcercise {
 		
 		List<EmployeeDataBase> data = generateEmployee();
 		List<String> result = filterBySalary(data);
-		System.out.println(result);
+//		System.out.println(result);
 		
 		grouingbyPlace(data);
 		placefilteration(data);
-		System.out.println(data);
+//		System.out.println(data);
 		updated(result, data);
 		
-
+		filterBySalaryStream(data);
+		filterBySalaryMapStream(data);
+		
+		List<Integer> numbers = new ArrayList<Integer>();
+		numbers.add(10);
+		numbers.add(20);
+		numbers.add(10);
+		
+		Set<Integer> output = numbers.stream().collect(Collectors.toSet());
+		System.out.println(output);
+		
+		List<Integer> numbers1 = new ArrayList<Integer>();
+		numbers1.add(10);
+		numbers1.add(60);
+		numbers1.add(20);
+		numbers1.add(30);
+		
+		List<Integer> asc = numbers1.stream().sorted().collect(Collectors.toList());
+		System.out.println(asc); 
+		
+		List<Integer> Desc = numbers1.stream().sorted(Collections.reverseOrder()).collect(Collectors.toList());
+		System.out.println(Desc); 
+		
+		groupByPlace(data);
+		
+		mapPreparation(data);
+		
+		
+		
 	}
 
 }
